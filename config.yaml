@@ -1,0 +1,25 @@
+application:
+  type: "Manufacturing"
+  process_description: "Description of the manufacturing process"
+  current_inspection_rate: 80.0
+  current_defect_rate: 1.0
+  production_rate: 1000
+  production_days_per_year: 250  # Example value, adjust according to actual operational days
+
+expectations:
+  max_fp_rate: 1.2
+  max_fn_rate: 1.2
+  cost_impact_fp: 5.0
+  cost_impact_fn: 1000.0
+
+implementation:
+  system_cost: 500000.0
+  num_cameras: 30
+  recurring_cost: 70000.0  # Annual maintenance and upgrade cost
+  time_horizon: 3  # Years for ROI calculation
+  overlap_factor: 5
+
+current_performance:
+  current_precision: 85.0
+  current_recall: 80.0
+  num_images: 1000
