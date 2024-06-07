@@ -74,7 +74,7 @@ process_description = st.sidebar.text_area("Process Description", value=config['
 current_defect_rate = st.sidebar.number_input("Current Defect Rate (%)", min_value=0.0, max_value=100.0, step=0.1, value=config['application']['current_defect_rate'])
 production_rate = st.sidebar.number_input("Production Rate (parts per hour)", min_value=1, step=1, value=config['application']['production_rate'])
 current_inspection_rate = st.sidebar.number_input("Current Inspection Defect Detection Rate (%)", min_value=0.0, max_value=100.0, step=0.1, value=config['application'].get('current_inspection_rate', 0))
-hours_per_day = st.sidebar.number_input("Working Hours per Day", min_value=1, step=1, value=8)
+hours_per_day = st.sidebar.number_input("Working Hours per Day", min_value=1, step=1, value=18)
 
 # Customer's Expectations
 st.sidebar.subheader("Customer's Expectations")
