@@ -28,11 +28,11 @@ def calculate_effective_recall(current_recall, overlap_factor):
     return effective_recall
 
 # Function to simulate the financial impact
-def calculate_financial_impact(defect_rate, production_rate, max_fp_rate, max_fn_rate, cost_impact_fp, cost_impact_fn):
-    production_run_size = production_rate  # Use production rate as the production run size
-    expected_defects = (defect_rate / 100) * production_run_size
+def calculate_financial_impact(defect_rate, production_rate, max_fp_rate, max_fn_rate, cost_impact_fp, cost_impact_fn, hours_per_day):
+    daily_production = production_rate * hours_per_day  # Convert hourly rate to daily rate
+    expected_defects = (defect_rate / 100) * daily_production
     
-    false_positives = (max_fp_rate / 100) * production_run_size
+    false_positives = (max_fp_rate / 100) * daily_production
     false_negatives = (max_fn_rate / 100) * expected_defects
     
     cost_fp = false_positives * cost_impact_fp
@@ -42,9 +42,9 @@ def calculate_financial_impact(defect_rate, production_rate, max_fp_rate, max_fn
     return total_cost, cost_fp, cost_fn, false_positives, false_negatives
 
 # Function to calculate the financial impact without the system
-def calculate_impact_without_system(defect_rate, production_rate, cost_impact_fn, current_inspection_rate):
-    production_run_size = production_rate  # Use production rate as the production run size
-    expected_defects = (defect_rate / 100) * production_run_size
+def calculate_impact_without_system(defect_rate, production_rate, cost_impact_fn, current_inspection_rate, hours_per_day):
+    daily_production = production_rate * hours_per_day  # Convert hourly rate to daily rate
+    expected_defects = (defect_rate / 100) * daily_production
     caught_defects = expected_defects * (current_inspection_rate / 100)
     uncaught_defects = expected_defects - caught_defects
     cost_without_system = uncaught_defects * cost_impact_fn
@@ -74,6 +74,7 @@ process_description = st.sidebar.text_area("Process Description", value=config['
 current_defect_rate = st.sidebar.number_input("Current Defect Rate (%)", min_value=0.0, max_value=100.0, step=0.1, value=config['application']['current_defect_rate'])
 production_rate = st.sidebar.number_input("Production Rate (parts per hour)", min_value=1, step=1, value=config['application']['production_rate'])
 current_inspection_rate = st.sidebar.number_input("Current Inspection Defect Detection Rate (%)", min_value=0.0, max_value=100.0, step=0.1, value=config['application'].get('current_inspection_rate', 0))
+hours_per_day = st.sidebar.number_input("Working Hours per Day", min_value=1, step=1, value=8)
 
 # Customer's Expectations
 st.sidebar.subheader("Customer's Expectations")
@@ -190,7 +191,6 @@ st.latex(r'''
 \text{ROI (Month m)} = \text{Cumulative Savings (Month m)} - \text{Cumulative Costs (Month m)}
 ''')
 
-
 # Run Simulation Button
 if st.sidebar.button("Run Simulation"):
 
@@ -201,9 +201,10 @@ if st.sidebar.button("Run Simulation"):
     st.write(f"Effective Recall with Overlap: {effective_recall:.2f}%")
 
     total_cost, cost_fp, cost_fn, false_positives, false_negatives = calculate_financial_impact(
-        current_defect_rate, production_rate, max_fp_rate, max_fn_rate, cost_impact_fp, cost_impact_fn)
+        current_defect_rate, production_rate, max_fp_rate, max_fn_rate, cost_impact_fp, cost_impact_fn, hours_per_day)
     
-    cost_without_system, caught_defects, uncaught_defects = calculate_impact_without_system(current_defect_rate, production_rate, cost_impact_fn, current_inspection_rate)
+    cost_without_system, caught_defects, uncaught_defects = calculate_impact_without_system(
+        current_defect_rate, production_rate, cost_impact_fn, current_inspection_rate, hours_per_day)
     
     daily_savings = cost_without_system - total_cost
     annual_savings = daily_savings * production_days_per_year
@@ -215,7 +216,7 @@ if st.sidebar.button("Run Simulation"):
     st.subheader("Financial Impact")
     col1, col2 = st.columns(2)
     
-    expected_defects = (current_defect_rate / 100) * production_rate  # Ensure this is calculated here for display
+    expected_defects = (current_defect_rate / 100) * production_rate * hours_per_day  # Ensure this is calculated here for display
     
     with col1:
         st.write("### Without System")
