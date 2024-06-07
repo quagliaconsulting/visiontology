@@ -138,12 +138,12 @@ st.latex(r'''
 
 # 7. Expected Defects
 st.latex(r'''
-\text{Expected Defects} = \frac{\text{Current Defect Rate} \times \text{Production Rate}}{100}
+\text{Expected Defects} = \frac{\text{Current Defect Rate} \times \text{Production Rate} \times \text{Hours per Day}}{100}
 ''')
 
 # 8. False Positives
 st.latex(r'''
-\text{False Positives} = \frac{\text{Max False Positive Rate} \times \text{Production Rate}}{100}
+\text{False Positives} = \frac{\text{Max False Positive Rate} \times \text{Production Rate} \times \text{Hours per Day}}{100}
 ''')
 
 # 9. False Negatives
@@ -163,17 +163,17 @@ st.latex(r'''
 
 # 12. Total Cost
 st.latex(r'''
-\text{Total Cost} = \text{Cost of False Negatives} + \text{Cost of False Positives}
+\text{Total Cost} = \text{Cost of False Negatives} - \text{Cost of False Positives}
 ''')
 
 # 13. Cost Without System
 st.latex(r'''
-\text{Cost Without System} = \left(\frac{\text{Current Defect Rate}}{100} \times \text{Production Rate} \times (1 - \frac{\text{Current Inspection Rate}}{100})\right) \times \text{Cost Impact of False Negatives}
+\text{Cost Without System} = \left(\frac{\text{Current Defect Rate}}{100} \times \text{Production Rate} \times \text{Hours per Day} \times \left(1 - \frac{\text{Current Inspection Rate}}{100}\right)\right) \times \text{Cost Impact of False Negatives}
 ''')
 
 # 14. Daily Savings
 st.latex(r'''
-\text{Daily Savings} = \text{Cost Without System} - \text{Total Financial Impact}
+\text{Daily Savings} = \text{Cost Without System} - \text{Total Cost}
 ''')
 
 # 15. Cumulative Costs (Month m)
@@ -190,6 +190,7 @@ st.latex(r'''
 st.latex(r'''
 \text{ROI (Month m)} = \text{Cumulative Savings (Month m)} - \text{Cumulative Costs (Month m)}
 ''')
+
 
 # Run Simulation Button
 if st.sidebar.button("Run Simulation"):
