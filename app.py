@@ -37,7 +37,7 @@ def calculate_financial_impact(defect_rate, production_rate, max_fp_rate, max_fn
     
     cost_fp = false_positives * cost_impact_fp
     cost_fn = false_negatives * cost_impact_fn
-    total_cost = cost_fn - cost_fp
+    total_cost = cost_fn + (cost_fp)
     
     return total_cost, cost_fp, cost_fn, false_positives, false_negatives
 
@@ -163,7 +163,7 @@ st.latex(r'''
 
 # 12. Total Cost
 st.latex(r'''
-\text{Total Cost} = \text{Cost of False Negatives} - \text{Cost of False Positives}
+\text{Total Cost} = \text{Cost of False Negatives} + \text{Cost of False Positives}
 ''')
 
 # 13. Cost Without System
