@@ -5,6 +5,7 @@ application:
   current_defect_rate: 1.0
   production_rate: 1000
   production_days_per_year: 250  # Example value, adjust according to actual operational days
+  production_hours_per_day: 18
 
 expectations:
   max_fp_rate: 1.2
